@@ -1,0 +1,69 @@
+//string의 부분집합을 vector<string>으로 출력하는 함수
+//이진수와 비교하는 방법을 사용.
+//index로 내부를 접근 할 수 있는 매개변수면 사용가능
+
+#include <vector>
+#include <string>
+
+using namespace std;
+using var = string;
+
+int tenConvertTwo(int num) //10진수 (ni)를 2진수로 변환
+{
+	int  s = 0;
+	for (int i = 1; num > 0; i *= 10)
+	{
+		int b = num % 2;
+		s += (b * i);
+		num /= 2;
+	}
+	return s;
+}
+
+vector<var> function(var v)
+{
+	vector<var> vec;
+
+	int maxLength = v.length();
+	int maxNum = 1;
+
+	//size에 맞게 2진수를 맞춰주기 위해 보정. 3자리면 111이 나와야하므로 7까지 맞춰준다.
+	for (int i = 0; i < maxLength; i++) 
+		maxNum *= 2;
+	maxNum -= 1;
+
+	for (int ni = 1; ni <= maxNum; ni++)// 1~maxNum까지의 수 와 v를 비교하면서 부분함수를 추출
+	{
+		string numStr = to_string(tenConvertTwo(ni));
+		if (numStr.length() < maxLength) //2진수 값 길이 보정
+		{
+			string temp;
+			int chai = maxLength - numStr.length();
+			for (int i = 0; i < chai; i++)
+				temp += "0";
+			numStr = (temp + numStr);
+		}
+
+		string s;
+		for (int i = 0; i < numStr.length(); i++)
+		{
+			if (numStr[i] == '1')
+			{
+				s.push_back(v[i]);
+			}
+		}
+
+		vec.push_back(s);
+	}
+
+	return vec;
+}
+
+int main()
+{
+	var s = "ABC";
+
+	vector<var> v = function(s);
+
+	return 0;
+}
